@@ -16,7 +16,7 @@ post '/newcall' do
   session[:rightNum] = Random.rand(5)
   session[:tries] = 3
   Twilio::TwiML::Response.new do |r|
-    r.Gather :action => '/guess' do |g|
+    r.Gather :action => '/guess', :timeout => 15 do |g|
       g.Say 'Welcome to the number guessing game. You have 3 tries left. Please guess a number from zero to five and hit the pound sign'
     end
   end.text
@@ -38,7 +38,7 @@ post '/guess' do
     if params[:tries] > 0
       Twilio::TwiML::Response.new do |r|
         r.Say diff + "You have #{params[:tries]} left"
-        r.Gather :action => '/guess' do |g|
+        r.Gather :timeout => 15, :action => '/guess' do |g|
           g.Say 'Please enter a number from zero to five and hit the pound sign'
         end
       end.text
