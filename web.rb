@@ -23,7 +23,7 @@ post '/newcall' do
 end
 
 post '/guess' do
-  if params[Digits].to_i == 1
+  if params[:Digits].to_i == 1
     Twilio::TwiML::Response.new do |r|
       r.Say 'You guessed the right number. You be baller dude'
       r.Play "http://com.twilio.music.rock.s3.amazonaws.com/jlbrock44_-_Apologize_Guitar_Deep_Fried.mp3"
