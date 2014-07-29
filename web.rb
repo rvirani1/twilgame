@@ -26,7 +26,7 @@ post '/guess' do
   session[:tries] -= 1
   if params[:Digits].to_i == session[:rightNum]
     Twilio::TwiML::Response.new do |r|
-      r.Say 'You guessed the right number. You be baller dude'
+      r.Say 'You guessed the right number.'
       r.Play "http://com.twilio.music.rock.s3.amazonaws.com/jlbrock44_-_Apologize_Guitar_Deep_Fried.mp3"
     end.text
   else
@@ -37,7 +37,7 @@ post '/guess' do
     end
     if params[:tries] != 0
       Twilio::TwiML::Response.new do |r|
-        r.Say diff + "You have " + params[:tries].to_s + " left"
+        r.Say diff + "You have " + params[:tries] + " left"
         r.Gather :timeout => 15, :action => '/guess' do |g|
           g.Say 'Please enter a number from zero to five and hit the pound sign'
         end
