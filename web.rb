@@ -15,9 +15,20 @@ post '/newcall' do
   session[:callSid] = params[:CallSid]
   session[:rightNum] = Random.rand(9)
   Twilio::TwiML::Response.new do |r|
-    r.Say 'Welcome to the number guessing game. Please guess a number'
+    r.Gather :timeout => 30, :numdigits => 9, :action => '/guess' do |g|
+      g.Say 'Welcome to the number guessing game. Please guess a number from one to ten'
+    end
+    r.Say 'You waited too long. Goodbye'
   end.text
 end
+
+post '/guess' do
+  Twilio::TwiML::Response.new do |r|
+    r.Say 'You guessed a number'
+  end.text
+end
+
+
 
 
 get '/foo' do
