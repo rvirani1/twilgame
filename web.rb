@@ -13,9 +13,9 @@ auth_token = '8466dfddd99695943abcc64161e9db05'
 
 post '/newcall' do
   session[:callSid] = params[:CallSid]
-  # session[:rightNum] = Random.rand(9)
+  session[:rightNum] = Random.rand(9)
   Twilio::TwiML::Response.new do |r|
-    r.Gather :timeout => 30, :action => '/guess' do |g|
+    r.Gather :action => '/guess' do |g|
       g.Say 'Welcome to the number guessing game. Please guess a number from one to ten'
     end
     r.Say 'You waited too long. Goodbye'
@@ -23,14 +23,18 @@ post '/newcall' do
 end
 
 post '/guess' do
-  if params[:Digits].to_i == 1
+  if params[:Digits].to_i == session[:rightNum]
     Twilio::TwiML::Response.new do |r|
       r.Say 'You guessed the right number. You be baller dude'
       r.Play "http://com.twilio.music.rock.s3.amazonaws.com/jlbrock44_-_Apologize_Guitar_Deep_Fried.mp3"
     end.text
   else
     Twilio::TwiML::Response.new do |r|
-      r.Say 'You guessed the wrong number. Call again'
+      r.Say 'You guessed the wrong number. Try again'
+      r.Gather :action => '/guess' do |g|
+        g.Say 'Please guess a number from one to ten'
+      end
+      r.Say 'You waited too long. Goodbye'
     end.text
   end
 end
