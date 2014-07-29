@@ -2,17 +2,24 @@ GEM
   remote: https://rubygems.org/
   specs:
     builder (3.2.2)
+    coderay (1.1.0)
     httparty (0.13.1)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     json (1.8.1)
     jwt (1.0.0)
+    method_source (0.8.2)
     multi_json (1.10.1)
     multi_xml (0.5.5)
+    pry (0.10.0)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.5.2)
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
+    slop (3.6.0)
     tilt (1.4.1)
     twilio-ruby (3.11.6)
       builder (>= 2.1.2)
@@ -24,5 +31,6 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
+  pry
   sinatra (= 1.1.0)
   twilio-ruby
