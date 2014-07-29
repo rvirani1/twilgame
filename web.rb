@@ -37,7 +37,7 @@ post '/guess' do
     end
     if params[:tries] != 0
       Twilio::TwiML::Response.new do |r|
-        r.Say diff + "You have " + params[:tries] + " left"
+        r.Say diff + "You have " + session[:tries].to_s + " left"
         r.Gather :timeout => 15, :action => '/guess' do |g|
           g.Say 'Please enter a number from zero to five and hit the pound sign'
         end
