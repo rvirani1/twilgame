@@ -35,7 +35,7 @@ post '/guess' do
     else
       diff = "You were too low"
     end
-    if params[:tries].to_i > 0
+    if params[:tries] != 0
       Twilio::TwiML::Response.new do |r|
         r.Say diff + "You have " + params[:tries].to_s + " left"
         r.Gather :timeout => 15, :action => '/guess' do |g|
