@@ -29,10 +29,15 @@ post '/guess' do
       r.Play "http://com.twilio.music.rock.s3.amazonaws.com/jlbrock44_-_Apologize_Guitar_Deep_Fried.mp3"
     end.text
   else
+    if params[:Digits].to_i > session[:rightNum]
+      diff = "You were too high"
+    else
+      diff = "You were too low"
+    end
     Twilio::TwiML::Response.new do |r|
-      r.Say 'You guessed the wrong number. Try again'
+      r.Say 'You guessed the wrong number.'
       r.Gather :action => '/guess' do |g|
-        g.Say 'Please guess a number from zero to nine'
+        g.Say 'Please guess a number from zero to nine' + diff
       end
       r.Say 'You waited too long. Goodbye'
     end.text
