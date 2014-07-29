@@ -13,16 +13,17 @@ auth_token = '8466dfddd99695943abcc64161e9db05'
 
 post '/newcall' do
   session[:callSid] = params[:CallSid]
-  session[:rightNum] = Random.rand(9)
+  session[:rightNum] = Random.rand(5)
+  session[:tries] = 3
   Twilio::TwiML::Response.new do |r|
     r.Gather :action => '/guess' do |g|
-      g.Say 'Welcome to the number guessing game. Please guess a number from zero to nine'
+      g.Say 'Welcome to the number guessing game. You have 3 tries left. Please guess a number from zero to five and hit the pound sign'
     end
-    r.Say 'You waited too long. Goodbye'
   end.text
 end
 
 post '/guess' do
+  session[:tries] -= 1
   if params[:Digits].to_i == session[:rightNum]
     Twilio::TwiML::Response.new do |r|
       r.Say 'You guessed the right number. You be baller dude'
@@ -34,24 +35,19 @@ post '/guess' do
     else
       diff = "You were too low"
     end
-    Twilio::TwiML::Response.new do |r|
-      r.Say 'You guessed the wrong number.'
-      r.Gather :action => '/guess' do |g|
-        g.Say 'Please guess a number from zero to nine' + diff
-      end
-      r.Say 'You waited too long. Goodbye'
-    end.text
+    if params[:tries] > 0
+      Twilio::TwiML::Response.new do |r|
+        r.Say diff + "You have #{params[:tries]} left"
+        r.Gather :action => '/guess' do |g|
+          g.Say 'Please enter a number from zero to five and hit the pound sign'
+        end
+      end.text
+    else
+      Twilio::TwiML::Response.new do |r|
+        r.Say "You're out of tries. Too bad."
+      end.text
+    end
   end
-end
-
-
-get '/foo' do
-  session[:message] = 'Hello World!'
-  redirect to('/bar')
-end
-
-get '/bar' do
-  session[:message]   # => 'Hello World!'
 end
 
 get '/' do
