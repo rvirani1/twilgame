@@ -11,7 +11,7 @@ auth_token = '8466dfddd99695943abcc64161e9db05'
 # set up a client to talk to the Twilio REST API
 @client = Twilio::REST::Client.new account_sid, auth_token
 
-get '/newcall' do
+post '/newcall' do
   session[:callSid] = params[:CallSid]
   session[:rightNum] = Random.rand(9)
   Twilio::TwiML::Response.new do |r|
