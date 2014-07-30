@@ -35,7 +35,7 @@ post '/guess' do
     else
       diff = "You were too low"
     end
-    if params[:tries].to_i > 0
+    if sessions[:tries] > 0
       Twilio::TwiML::Response.new do |r|
         r.Play "http://www.riazvirani.info/miss.wav"
         r.Say diff + "You have " + session[:tries].to_s + " tries left"
