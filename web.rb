@@ -30,12 +30,12 @@ post '/guess' do
       r.Play "http://www.riazvirani.info/yay.mp3"
     end.text
   else
-    if param[:Digits].to_i > session[:rightNum]
+    if params[:Digits].to_i > session[:rightNum]
       diff = "You were too high"
     else
       diff = "You were too low"
     end
-    if sessions[:tries] > 0
+    if session[:tries] > 0
       Twilio::TwiML::Response.new do |r|
         r.Play "http://www.riazvirani.info/miss.wav"
         r.Say diff + "You have " + session[:tries].to_s + " tries left"
