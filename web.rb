@@ -30,7 +30,7 @@ post '/guess' do
       r.Play "http://www.riazvirani.info/yay.mp3"
     end.text
   else
-    if params[:Digits].to_i > session[:rightNum]
+    if param[:Digits].to_i > session[:rightNum]
       diff = "You were too high"
     else
       diff = "You were too low"
